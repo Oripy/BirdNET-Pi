@@ -78,11 +78,11 @@ plot = sns.countplot(y='Com_Name', data=df_plt_top10_today, palette=colors, orde
 z = plot.get_ymajorticklabels()
 plot.set_yticklabels(['\n'.join(textwrap.wrap(ticklabel.get_text(), 15)) for ticklabel in plot.get_yticklabels()], fontsize=10)
 plot.set(ylabel=None)
-plot.set(xlabel="Detections")
+plot.set(xlabel="Détections")
 
 
 # Generate crosstab matrix for heatmap plot
-heat = pd.crosstab(df_plt_top10_today['Com_Name'], df_plt_top10_today['Hour of Day'])
+heat = pd.crosstab(df_plt_top10_today['Com_Name'], df_plt_top10_today['Heure de la journée'])
 
 # Order heatmap Birds by frequency of occurrance
 heat.index = pd.CategoricalIndex(heat.index, categories=freq_order)
@@ -128,7 +128,7 @@ plot.set(ylabel=None)
 plot.set(xlabel="Hour of Day")
 # Set combined plot layout and titles
 f.subplots_adjust(top=0.9)
-plt.suptitle("Top 10 Last Updated: " + str(now.strftime("%Y-%m-%d %H:%M")))
+plt.suptitle("10 Meilleures espèces (Mise à jour : " + str(now.strftime("%Y-%m-%d %H:%M")) + ')')
 
 # Save combined plot
 userDir = os.path.expanduser('~')
@@ -169,11 +169,11 @@ plot = sns.countplot(y='Com_Name', data=df_plt_Bot10_today, palette=colors, orde
 z = plot.get_ymajorticklabels()
 plot.set_yticklabels(['\n'.join(textwrap.wrap(ticklabel.get_text(), 15)) for ticklabel in plot.get_yticklabels()], fontsize=10)
 plot.set(ylabel=None)
-plot.set(xlabel="Detections")
+plot.set(xlabel="Détections")
 
 # Generate crosstab matrix for heatmap plot
 
-heat = pd.crosstab(df_plt_Bot10_today['Com_Name'], df_plt_Bot10_today['Hour of Day'])
+heat = pd.crosstab(df_plt_Bot10_today['Com_Name'], df_plt_Bot10_today['Heure de la journée'])
 # Order heatmap Birds by frequency of occurrance
 heat.index = pd.CategoricalIndex(heat.index, categories=freq_order)
 heat.sort_index(level=0, inplace=True)
@@ -208,7 +208,7 @@ plot.set(ylabel=None)
 plot.set(xlabel="Hour of Day")
 # Set combined plot layout and titles
 f.subplots_adjust(top=0.9)
-plt.suptitle("Bottom 10 Last Updated: " + str(now.strftime("%Y-%m-%d %H:%M")))
+plt.suptitle("10 Dernières espèces (Mise à jour : " + str(now.strftime("%Y-%m-%d %H:%M")) + ')')
 
 # Save combined plot
 savename = userDir + '/BirdSongs/Extracted/Charts/Combo2-' + str(now.strftime("%Y-%m-%d")) + '.png'

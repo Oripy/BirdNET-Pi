@@ -521,7 +521,7 @@ die();
     </table></div>
 
 
-    <h3>Today's Detections <?php if($kiosk == false) { ?>— <input autocomplete="off" size="11" type="text" placeholder="Recherche..." id="searchterm" name="searchterm"><?php } ?></h3>
+    <h3>Détections du jour <?php if($kiosk == false) { ?>— <input autocomplete="off" size="11" type="text" placeholder="Recherche..." id="searchterm" name="searchterm"><?php } ?></h3>
 
     <div style="padding-bottom:10px" id="detections_table"><h3>Chargement...</h3></div>
 
