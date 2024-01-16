@@ -86,10 +86,10 @@ if(!file_exists($home."/BirdNET-Pi/scripts/disk_check_exclude.txt") || strpos(fi
     <input type="hidden" name="sort" value="<?php if(isset($_GET['sort'])){echo $_GET['sort'];}?>">
       <input type="hidden" name="view" value="Species Stats">
       <button <?php if(!isset($_GET['sort']) || $_GET['sort'] == "alphabetical"){ echo "style='background:#9fe29b !important;'"; }?> class="sortbutton" type="submit" name="sort" value="alphabetical">
-         <img src="images/sort_abc.svg" title="Sort by alphabetical" alt="Sort by alphabetical">
+         <img src="images/sort_abc.svg" title="Tri alphabétique" alt="Sort by alphabetical">
       </button>
       <button <?php if(isset($_GET['sort']) && $_GET['sort'] == "occurrences"){ echo "style='background:#9fe29b !important;'"; }?> class="sortbutton" type="submit" name="sort" value="occurrences">
-         <img src="images/sort_occ.svg" title="Sort by occurrences" alt="Sort by occurrences">
+         <img src="images/sort_occ.svg" title="Tri par occurrences" alt="Sort by occurrences">
       </button>
    </form>
 </div>
@@ -174,7 +174,7 @@ function setModalText(iter, title, text, authorlink) {
 </script>  
 <div class="column center">
 <?php if(!isset($_GET['species'])){
-?><p class="centered">Choose a species to load images from Flickr.</p>
+?><p class="centered">Choisir une espèce pour afficher des images de Flickr.</p>
 <?php
 };?>
 <?php if(isset($_GET['species'])){
@@ -195,15 +195,15 @@ while($results=$result3->fetchArray(SQLITE3_ASSOC)){
   $filename = "/By_Date/".$date."/".$comname."/".$results['File_Name'];
   echo str_pad("<h3>$species</h3>
     <table><tr>
-  <td class=\"relative\"><a target=\"_blank\" href=\"index.php?filename=".$results['File_Name']."\"><img title=\"Open in new tab\" class=\"copyimage\" width=25 src=\"images/copy.png\"></a> <a href=\"https://wikipedia.org/wiki/$dbsciname\" target=\"top\"/><i>$sciname</i></a><br>
-  <b>Occurrences: </b>$count<br>
-  <b>Max Confidence: </b>$maxconf<br>
-  <b>Best Recording: </b>$date $time<br>
+  <td class=\"relative\"><a target=\"_blank\" href=\"index.php?filename=".$results['File_Name']."\"><img title=\"Ouvrir dans un nouvel onglet\" class=\"copyimage\" width=25 src=\"images/copy.png\"></a> <a href=\"https://wikipedia.org/wiki/$dbsciname\" target=\"top\"/><i>$sciname</i></a><br>
+  <b>Occurrences : </b>$count<br>
+  <b>Confiance Max : </b>$maxconf<br>
+  <b>Meilleurs enregistrements : </b>$date $time<br>
   <a href=\"https://allaboutbirds.org/guide/$comname\" target=\"top\"/>All About Birds</a><br>
   <video onplay='setLiveStreamVolume(0)' onended='setLiveStreamVolume(1)' onpause='setLiveStreamVolume(1)' controls poster=\"$filename.png\" title=\"$filename\"><source src=\"$filename\"></video></td>
   </tr>
     </table>
-  <p>Loading Images from Flickr</p>", '6096');
+  <p>Chargement des images depuis Flickr</p>", '6096');
   
   echo "<script>document.getElementsByTagName(\"h3\")[0].scrollIntoView();</script>";
   
@@ -243,7 +243,7 @@ while($results=$result3->fetchArray(SQLITE3_ASSOC)){
 ?>
 <?php if(isset($_GET['species'])){?>
 <br><br>
-<div class="brbanner">Best Recordings for Other Species:</div><br>
+<div class="brbanner">Meilleur enregistrement d'autres espèces :</div><br>
 <?php } else {?>
 <hr><br>
 <?php } ?>
@@ -263,7 +263,7 @@ array_push($excludelines, $results['Date']."/".$comname."/".$results['File_Name'
       <tr>
       <form action="" method="GET">
         <input type="hidden" name="sort" value="<?php if(isset($_GET['sort'])){echo $_GET['sort'];}?>">
-      <td class="relative"><a target="_blank" href="index.php?filename=<?php echo $results['File_Name']; ?>"><img title="Open in new tab" class="copyimage" width=25 src="images/copy.png"></a><input type="hidden" name="view" value="Species Stats">
+      <td class="relative"><a target="_blank" href="index.php?filename=<?php echo $results['File_Name']; ?>"><img title="Ouvrir dans un nouvel onglet" class="copyimage" width=25 src="images/copy.png"></a><input type="hidden" name="view" value="Species Stats">
         <button type="submit" name="species" value="<?php echo $results['Com_Name'];?>"><?php echo $results['Com_Name'];?></button><br><b>Occurrences:</b> <?php echo $results['COUNT(*)'];?><br>
       <b>Max Confidence:</b> <?php echo $percent = round((float)round($results['MAX(Confidence)'],2) * 100 ) . '%';?><br>
       <b>Best Recording:</b> <?php echo $results['Date']." ".$results['Time'];?><br><video onplay='setLiveStreamVolume(0)' onended='setLiveStreamVolume(1)' onpause='setLiveStreamVolume(1)' controls poster="<?php echo $filename.".png";?>" preload="none" title="<?php echo $filename;?>"><source src="<?php echo $filename;?>" type="audio/mp3"></video></td>

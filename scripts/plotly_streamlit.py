@@ -57,29 +57,29 @@ df2 = df.copy()
 df2['DateTime'] = pd.to_datetime(df2['Date'] + " " + df2['Time'])
 df2 = df2.set_index('DateTime')
 
-daily = st.sidebar.checkbox('Single Day View', help='Select if you want single day view, unselect for multi-day views')
+daily = st.sidebar.checkbox('Vue journalière', help='Sélectionner pour la Vue journalière, désectionner pour la vue globale')
 
 if daily:
     # Date as slider
     Start_Date = pd.to_datetime(df2.index.min()).date()
     End_Date = pd.to_datetime(df2.index.max()).date()
 #     cols1, cols2 = st.columns((1, 1))
-    end_date = st.sidebar.date_input('Date to View',
+    end_date = st.sidebar.date_input('Date à Visualiser',
                                      min_value=Start_Date,
                                      max_value=End_Date,
                                      value=(End_Date),
-                                     help='Select date for single day view')
+                                     help='Sélectionner la date pour la Vue journalière')
     start_date = end_date
 else:
     Start_Date = pd.to_datetime(df2.index.min()).date()
     End_Date = pd.to_datetime(df2.index.max()).date()
 
 #    cols1, cols2 = st.columns((1, 1))
-    start_date, end_date = st.sidebar.slider('Date Range',
+    start_date, end_date = st.sidebar.slider('Intervalle de date',
                                              min_value=Start_Date-timedelta(days=1),
                                              max_value=End_Date,
                                              value=(Start_Date, End_Date),
-                                             help='Select start and end date, if same date get a clockplot for a single day')
+                                             help='Sélectionner date de début et de fin, si la date est la même, vue journalière')
 
 # start_date, end_date = cols1.date_input(
 #     "Date Input for Analysis - select Range for single specie analysis, select single date for daily view",
@@ -110,25 +110,25 @@ st.write('<style>div.st-bf{flex-direction:column;} div.st-ag{font-weight:bold;pa
 # Disallow "Daily time period" for "Daily Chart"
 if start_date == end_date:
     resample_sel = st.sidebar.radio(
-        "Resample Resolution",
-        ('Raw', '15 minutes', 'Hourly'), index=1, help='Select resolution for single day - larger times run faster')
+        "Intervalle",
+        ('Brut', '15 minutes', 'Par heure'), index=1, help='Sélectionner l\'intervalle pour une journée')
 
-    resample_times = {'Raw': 'Raw',
+    resample_times = {'Brut': 'Brut',
                       '1 minute': '1min',
                       '15 minutes': '15min',
-                      'Hourly': '1H'
+                      'Par heure': '1H'
                       }
     resample_time = resample_times[resample_sel]
 
 else:
     resample_sel = st.sidebar.radio(
-        "Resample Resolution",
-        ('Raw', '15 minutes', 'Hourly', 'DAILY'), index=1, help='Select resolution for species - DAILY provides time series')
+        "Intervalle",
+        ('Brut', '15 minutes', 'Par heure', 'Journalier'), index=1, help='Sélectionner l\'intervalle par espèce - JOURNALIER montre une vue temporelle')
 
-    resample_times = {'Raw': 'Raw',
+    resample_times = {'Brut': 'Brut',
                       '1 minute': '1min',
                       '15 minutes': '15min',
-                      'Hourly': '1H',
+                      'Par heure': '1H',
                       'DAILY': '1D'
                       }
     resample_time = resample_times[resample_sel]
@@ -136,7 +136,7 @@ else:
 
 @st.cache_data()
 def time_resample(df, resample_time):
-    if resample_time == 'Raw':
+    if resample_time == 'Brut':
         df_resample = df['Com_Name']
 
     else:
@@ -160,7 +160,7 @@ species = list(hourly.sort_values("All", ascending=False).index)
 
 # cols1, cols2 = st.columns((1, 1))
 top_N = st.sidebar.slider(
-    'Select Number of Birds to Show',
+    'Sélectionner le nombre d\'oiseaux à montrer',
     min_value=1,
     max_value=len(Specie_Count),
     value=min(10, len(Specie_Count))
@@ -236,8 +236,8 @@ if daily is False:
 
     if resample_time != '1D':
         specie = st.selectbox(
-            'Which bird would you like to explore for the dates '
-            + str(start_date) + ' to ' + str(end_date) + '?',
+            'Quel oiseaux voulez vous voir pour les dates '
+            + str(start_date) + ' à ' + str(end_date) + ' ?',
             species,
             index=0)
 
@@ -249,9 +249,9 @@ if daily is False:
                 specs=[[{"type": "xy", "rowspan": 3}, {"type": "polar", "rowspan": 2}],
                        [{"rowspan": 1}, {"rowspan": 1}],
                        [None, {"type": "xy", "rowspan": 1}]],
-                subplot_titles=('<b>Top ' + str(top_N) + ' Species in Date Range ' + str(start_date) + ' to ' + str(
-                    end_date) + '<br>for ' + str(resample_sel) + ' sampling interval.' + '</b>',
-                                'Total Detect:' + str('{:,}'.format(df_counts))
+                subplot_titles=('<b>' + str(top_N) + ' Meilleures Espèces dans l\'intervalle ' + str(start_date) + ' à ' + str(
+                    end_date) + '<br>pour l\'intervalle ' + str(resample_sel) + '.' + '</b>',
+                                'Nombre de détections :' + str('{:,}'.format(df_counts))
                                 # +   '   Confidence Max:' + str(
                                 #     '{:.2f}%'.format(max(df2[df2['Com_Name'] == specie]['Confidence']) * 100)) +
                                 # '   ' + '   Median:' + str(
@@ -289,7 +289,7 @@ if daily is False:
                     radialaxis=dict(
                         tickfont_size=font_size,
                         showticklabels=False,
-                        hoverformat="#%{theta}: <br>Popularity: %{percent} </br> %{r}"
+                        hoverformat="#%{theta}: <br>Popularité: %{percent} </br> %{r}"
                     ),
                     angularaxis=dict(
                         tickfont_size=font_size,
@@ -298,10 +298,10 @@ if daily is False:
                         tickmode='array',
                         tickvals=[0, 15, 35, 45, 60, 75, 90, 105, 120, 135, 150, 165, 180, 195, 210,
                                   225, 240, 255, 270, 285, 300, 315, 330, 345],
-                        ticktext=['12am', '1am', '2am', '3am', '4am', '5am', '6am', '7am', '8am', '9am',
-                                  '10am', '11am', '12pm', '1pm', '2pm', '3pm', '4pm', '5pm', '6pm',
-                                  '7pm', '8pm', '9pm', '10pm', '11pm'],
-                        hoverformat="#%{theta}: <br>Popularity: %{percent} </br> %{r}"
+                        ticktext=['00', '01', '02', '03', '04', '05', '06', '07', '08',
+                                      '09', '10', '11', '12', '13', '14', '15', '16', '17',
+                                      '18', '19', '20', '21', '22', '23'],
+                        hoverformat="#%{theta}: <br>Popularité: %{percent} </br> %{r}"
                     ),
                 ),
             )
@@ -338,7 +338,7 @@ if daily is False:
                         radialaxis=dict(
                             tickfont_size=font_size,
                             showticklabels=False,
-                            hoverformat="#%{theta}: <br>Popularity: %{percent} </br> %{r}"
+                            hoverformat="#%{theta}: <br>Popularité: %{percent} </br> %{r}"
                         ),
                         angularaxis=dict(
                             tickfont_size=font_size,
@@ -347,10 +347,10 @@ if daily is False:
                             tickmode='array',
                             tickvals=[0, 15, 35, 45, 60, 75, 90, 105, 120, 135, 150, 165, 180, 195,
                                       210, 225, 240, 255, 270, 285, 300, 315, 330, 345],
-                            ticktext=['12am', '1am', '2am', '3am', '4am', '5am', '6am', '7am', '8am',
-                                      '9am', '10am', '11am', '12pm', '1pm', '2pm', '3pm', '4pm', '5pm',
-                                      '6pm', '7pm', '8pm', '9pm', '10pm', '11pm'],
-                            hoverformat="#%{theta}: <br>Popularity: %{percent} </br> %{r}"
+                            ticktext=['00', '01', '02', '03', '04', '05', '06', '07', '08',
+                                      '09', '10', '11', '12', '13', '14', '15', '16', '17',
+                                      '18', '19', '20', '21', '22', '23'],
+                            hoverformat="#%{theta}: <br>Popularité : %{percent} </br> %{r}"
                         ),
                     ),
                 )
@@ -359,8 +359,8 @@ if daily is False:
                 fig.add_trace(go.Bar(x=daily.columns[:-1], y=daily.loc[specie][:-1], marker_color='seagreen'), row=3, col=1)
                 st.plotly_chart(fig, use_container_width=True)  # , config=config)
                 df_counts = int(hourly[hourly.index == specie]['All'])
-                st.subheader('Total Detect:' + str('{:,}'.format(df_counts))
-                             + '   Confidence Max:' +
+                st.subheader('Nombre de détections :' + str('{:,}'.format(df_counts))
+                             + '   Confiance Max:' +
                              str('{:.2f}%'.format(max(df2[df2['Com_Name'] == specie]['Confidence']) * 100))
                              + '   ' + '   Median:' +
                              str('{:.2f}%'.format(np.median(df2[df2['Com_Name'] == specie]['Confidence']) * 100)))
@@ -369,30 +369,30 @@ if daily is False:
 
             with col2:
                 try:
-                    recording = st.selectbox('Available recordings', recordings.sort_index(ascending=False))
+                    recording = st.selectbox('Enregistrements disponible', recordings.sort_index(ascending=False))
                     date_specie = df2.loc[df2['File_Name'] == recording, ['Date', 'Com_Name']]
                     date_dir = date_specie['Date'].values[0]
                     specie_dir = date_specie['Com_Name'].values[0].replace(" ", "_")
                     st.image(userDir + '/BirdSongs/Extracted/By_Date/' + date_dir + '/' + specie_dir + '/' + recording + '.png')
                     st.audio(userDir + '/BirdSongs/Extracted/By_Date/' + date_dir + '/' + specie_dir + '/' + recording)
                 except Exception:
-                    st.title('RECORDING NOT AVAILABLE :(')
+                    st.title('ENREGISTREMENT NON DISPONIBLE :(')
             # try:
             #     con = sqlite3.connect(userDir + '/BirdNET-Pi/scripts/birds.db')
             #     cur = con.cursor()
             cola, colb, colc, cold = st.columns((3, 1, 1, 1))
             with colb:
-                seen = st.checkbox('Reviewed')
+                seen = st.checkbox('Examiné')
             if seen:
                 with colc:
-                    verified = st.radio("Verification", ['True Positive', 'False Positive'])
+                    verified = st.radio("Vérification", ['Vrai Positif', 'Faux Positif'])
 
-                    if verified == "False Positive":
+                    if verified == "Faux Positif":
                         df_names = pd.read_csv(userDir + '/BirdNET-Pi/model/labels.txt', delimiter='_', names=['Sci_Name', 'Com_Name'])
                         df_unknown = pd.DataFrame({"Sci_Name": ["UNKNOWN"], "Com_Name": ["UNKNOWN"]})
                         df_names = pd.concat([df_unknown, df_names], ignore_index=True)
                         with cold:
-                            corrected = st.selectbox('What species?', df_names['Com_Name'])
+                            corrected = st.selectbox('Quelle Espèce ?', df_names['Com_Name'])
             #     cur.execute("UPDATE detections SET  Seen = seen WHERE File_Name = recording")
             #     con.commit()
             #     con.close()
@@ -403,8 +403,8 @@ if daily is False:
 
     else:
 
-        specie = st.selectbox('Which bird would you like to explore for the dates '
-                              + str(start_date) + ' to ' + str(end_date) + '?',
+        specie = st.selectbox('Quel oiseaux voulez-vous explorer pour les dates '
+                              + str(start_date) + ' à ' + str(end_date) + ' ?',
                               species[1:],
                               index=0)
 
@@ -417,7 +417,7 @@ if daily is False:
 
     #                     subplot_titles=('<b>Daily Top '+ str(top_N) + ' Species in Date Range '+ str(start_date) +' to '+ str(end_date) +'</b>',
     #                                     '<b>Daily ' + specie+ ' Detections on 15 minute intervals </b>'),
-    # #                                     'Total Detect:'+str('{:,}'.format(df_counts))+
+    # #                                     'Nombre de détections :'+str('{:,}'.format(df_counts))+
     # #                                     '   Confidence Max:'+str('{:.2f}%'.format(max(df2[df2['Com_Name']==specie]['Confidence'])*100))+
     # #                                     '   '+'   Median:'+str('{:.2f}%'.format(np.median(df2[df2['Com_Name']==specie]['Confidence'])*100))
     # #                                     )
@@ -440,7 +440,7 @@ if daily is False:
         # margin=dict(l=0, r=0, t=50, b=0),
         # yaxis={'categoryorder':'total ascending'})
         color_pals = px.colors.named_colorscales()
-        selected_pal = st.sidebar.selectbox('Select Color Pallet for Daily Detections', color_pals)
+        selected_pal = st.sidebar.selectbox('Sélectionner la palette de couleur pour les détections journalières', color_pals)
 
         heatmap = go.Heatmap(
             # x=fig_x, y=fig_y,
@@ -481,8 +481,8 @@ else:
     fig = make_subplots(
         rows=1, cols=2,
         specs=[[{"type": "xy", "rowspan": 1}, {"type": "xy", "rowspan": 1}]],
-        subplot_titles=('<b>Top ' + str(top_N) + ' Species For ' + str(start_date) + '</b>',
-                        '<b>Daily ' + str(start_date) + ' Detections on ' + resample_sel + ' interval</b>'),
+        subplot_titles=('<b>' + str(top_N) + ' Meilleures espèces Pour ' + str(start_date) + '</b>',
+                        '<b>' + str(start_date) + ' Détections Journalières sur l\'intervalle ' + resample_sel + '</b>'),
         shared_yaxes='all',
         horizontal_spacing=0
     )

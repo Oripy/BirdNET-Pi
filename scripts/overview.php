@@ -205,9 +205,9 @@ if(isset($_GET['ajax_detections']) && $_GET['ajax_detections'] == "true" && isse
         }
         </style>
         <table class="<?php echo ($_GET['previous_detection_identifier'] == 'undefined') ? '' : 'fade-in';  ?>">
-          <h3>Most Recent Detection: <span style="font-weight: normal;"><?php echo $mostrecent['Date']." ".$mostrecent['Time'];?></span></h3>
+          <h3>Detection la plus récente: <span style="font-weight: normal;"><?php echo $mostrecent['Date']." ".$mostrecent['Time'];?></span></h3>
           <tr>
-            <td class="relative"><a target="_blank" href="index.php?filename=<?php echo $mostrecent['File_Name']; ?>"><img class="copyimage" title="Open in new tab" width="25" height="25" src="images/copy.png"></a>
+            <td class="relative"><a target="_blank" href="index.php?filename=<?php echo $mostrecent['File_Name']; ?>"><img class="copyimage" title="Ouvrir dans un nouvel onglet" width="25" height="25" src="images/copy.png"></a>
             <div class="centered_image_container" style="margin-bottom: 0px !important;">
               <?php if(!empty($config["FLICKR_API_KEY"]) && strlen($image[2]) > 0) { ?>
                 <img onclick='setModalText(<?php echo $iterations; ?>,"<?php echo urlencode($image[2]); ?>", "<?php echo $image[3]; ?>", "<?php echo $image[4]; ?>", "<?php echo $image[1]; ?>", "<?php echo $image[5]; ?>")' src="<?php echo $image[1]; ?>" class="img1">
@@ -216,7 +216,7 @@ if(isset($_GET['ajax_detections']) && $_GET['ajax_detections'] == "true" && isse
                   <input type="hidden" name="view" value="Species Stats">
                   <button type="submit" name="species" value="<?php echo $mostrecent['Com_Name'];?>"><?php echo $mostrecent['Com_Name'];?></button><img style="width: unset !important;display: inline;height: 1em;cursor:pointer" title="View species stats" onclick="generateMiniGraph(this, '<?php echo $comname; ?>')" width=25 src="images/chart.svg"><br>
                   <a href="https://wikipedia.org/wiki/<?php echo $sciname;?>" target="_blank"><i><?php echo $mostrecent['Sci_Name'];?></i></a>
-                  <br>Confidence: <?php echo $percent = round((float)round($mostrecent['Confidence'],2) * 100 ) . '%';?><br></div><br>
+                  <br>Confiance: <?php echo $percent = round((float)round($mostrecent['Confidence'],2) * 100 ) . '%';?><br></div><br>
                   <video style="margin-top:10px" onplay='setLiveStreamVolume(0)' onended='setLiveStreamVolume(1)' onpause='setLiveStreamVolume(1)' controls poster="<?php echo $filename.".png";?>" preload="none" title="<?php echo $filename;?>"><source src="<?php echo $filename;?>"></video></td>
               </form>
           </tr>
@@ -225,9 +225,9 @@ if(isset($_GET['ajax_detections']) && $_GET['ajax_detections'] == "true" && isse
   }
   if($iterations == 0) {
     if($todaycount['COUNT(*)'] > 0) {
-      echo "<h3>Your system is currently processing a backlog of audio. This can take several hours before normal functionality of your BirdNET-Pi resumes.</h3>";
+      echo "<h3>Le système est entrain de traiter des fichiers audio. Cela peut prendre quelques heures avant un retour à la normale du système BirdNET-Pi.</h3>";
     } else {
-      echo "<h3>No Detections For Today.</h3>";
+      echo "<h3>Pas de détection aujourd'hui.</h3>";
     }
   }
   die();
@@ -237,7 +237,7 @@ if(isset($_GET['ajax_left_chart']) && $_GET['ajax_left_chart'] == "true") {
 
 $statement = $db->prepare('SELECT COUNT(*) FROM detections');
 if($statement == False) {
-  echo "Database is busy";
+  echo "Base de donnée occupée";
   header("refresh: 0;");
 }
 $result = $statement->execute();
@@ -274,22 +274,22 @@ $totalspeciestally = $result6->fetchArray(SQLITE3_ASSOC);
     <td><?php echo $totalcount['COUNT(*)'];?></td>
   </tr>
   <tr>
-    <th>Today</th>
+    <th>Aujourd'hui</th>
     
     <td><form action="" method="GET"><button type="submit" name="view" value="Today's Detections"><?php echo $todaycount['COUNT(*)'];?></button></td>
     </form>
   </tr>
   <tr>
-    <th>Last Hour</th>
+    <th>Dernière heure</th>
     <td><?php echo $hourcount['COUNT(*)'];?></td>
   </tr>
   <tr>
-    <th>Species Detected Today</th>
+    <th>Espèces détectées aujourd'hui</th>
     <td><form action="" method="GET"><input type="hidden" name="view" value="Recordings"><button type="submit" name="date" value="<?php echo date('Y-m-d');?>"><?php echo $speciestally['COUNT(DISTINCT(Com_Name))'];?></button></td>
     </form>
   </tr>
   <tr>
-    <th>Total Number of Species</th>
+    <th>Nombre d'espèces au total</th>
     <td><form action="" method="GET"><button type="submit" name="view" value="Species Stats"><?php echo $totalspeciestally['COUNT(DISTINCT(Com_Name))'];?></button></td>
     </form>
   </tr>
@@ -311,8 +311,8 @@ die();
   overflow-y: auto;overscroll-behavior:contain" id="attribution-dialog">
     <h1 id="modalHeading"></h1>
     <p id="modalText"></p>
-    <button onclick="hideDialog()">Close</button>
-    <button style="font-weight:bold;color:blue" onclick="if(confirm('Are you sure you want to blacklist this image?')) { blacklistImage(); }">Blacklist this image</button>
+    <button onclick="hideDialog()">Fermer</button>
+    <button style="font-weight:bold;color:blue" onclick="if(confirm('Etes vous sûr de vouloir bloquer cette image ?')) { blacklistImage(); }">Ne plus voir cette image</button>
   </dialog>
   <script src="static/dialog-polyfill.js"></script>
   <script src="static/Chart.bundle.js"></script>
@@ -372,10 +372,10 @@ if (file_exists('./Charts/'.$chart)) {
 
 <div id="most_recent_detection"></div>
 <br>
-<h3>5 Most Recent Detections</h3>
-<div style="padding-bottom:10px;" id="detections_table"><h3>Loading...</h3></div>
+<h3>5 Dernière détections</h3>
+<div style="padding-bottom:10px;" id="detections_table"><h3>Chargement...</h3></div>
 
-<h3>Currently Analyzing</h3>
+<h3>Analyse actuelle</h3>
 <?php
 $refresh = $config['RECORDING_LENGTH'];
 $time = time();
@@ -560,7 +560,7 @@ function generateMiniGraph(elem, comname) {
           },
           title: {
             display: true,
-            text: 'Detections Over 30d'
+            text: 'Détections sur 30 jours'
           },
           legend: {
             display: false

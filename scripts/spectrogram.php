@@ -511,7 +511,7 @@ h1 {
 	}
 	?>
   <div style="display:inline" id="gain" >
-  <label>Gain: </label>
+  <label>Gain : </label>
   <span class="slidecontainer">
     <input name="gain_input" type="range" min="0" max="250" value="100" class="slider" id="gain_input">
     <span id="gain_value"></span>%
@@ -519,11 +519,11 @@ h1 {
   </div>
     &mdash;
   <div style="display:inline" id="comp" >
-    <label>Compression: </label>
+    <label>Compression : </label>
     <input name="compression" type="checkbox" id="compression" disabled>
   </div>
   <div style="display:inline" id="fshift" >
-    <label>Freq shift: </label>
+    <label>Décalage de fréquence : </label>
     <?php 
         if ($config['ACTIVATE_FREQSHIFT_IN_LIVESTREAM'] == "true") {
           $freqshift_state = "checked";
@@ -537,7 +537,7 @@ h1 {
 </div>
 
 <audio style="display:none" controls="" crossorigin="anonymous" id='player' preload="none"><source id="playersrc" src="/stream"></audio>
-<h1 id="loading-h1">Loading...</h1>
+<h1 id="loading-h1">Chargement...</h1>
 <canvas></canvas>
 
 <script>
@@ -552,7 +552,7 @@ if (typeof (rtsp_stream_select) !== 'undefined' && rtsp_stream_select !== null) 
 
             //Create the loading header again as a placeholder while we're waiting to reload the stream
             var h1_loading = document.createElement("H1");
-            var h1_loading_text = document.createTextNode("Loading...");
+            var h1_loading_text = document.createTextNode("Chargement...");
             h1_loading.setAttribute("id", "loading-h1");
             h1_loading.setAttribute("style", "font-size:48px; font-weight: bolder; color: #FFF");
             h1_loading.appendChild(h1_loading_text);

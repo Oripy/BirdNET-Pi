@@ -65,7 +65,7 @@ if(isset($_GET['stream'])){
   if (!isset($_SERVER['PHP_AUTH_USER'])) {
     header('WWW-Authenticate: Basic realm="My Realm"');
     header('HTTP/1.0 401 Unauthorized');
-    echo 'You cannot listen to the live audio stream';
+    echo 'Ecouter le flux Audio est impossible';
     exit;
   } else {
     $submittedpwd = $_SERVER['PHP_AUTH_PW'];
@@ -79,14 +79,14 @@ if(isset($_GET['stream'])){
     } else {
       header('WWW-Authenticate: Basic realm="My Realm"');
       header('HTTP/1.0 401 Unauthorized');
-      echo 'You cannot listen to the live audio stream';
+      echo 'Ecouter le flux audio est impossible';
       exit;
     }
   }
 } else {
     echo "
   <form action=\"\" method=\"GET\">
-    <button type=\"submit\" name=\"stream\" value=\"play\">Live Audio</button>
+    <button type=\"submit\" name=\"stream\" value=\"play\">Flux Audio</button>
   </form>
   </div>
   <h1><a href=\"/\"><img class=\"topimage\" src=\"images/bnp.png\"></a></h1>

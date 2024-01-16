@@ -47,13 +47,13 @@ if(isset($_GET['deletefile'])) {
     } else {
       header('WWW-Authenticate: Basic realm="My Realm"');
       header('HTTP/1.0 401 Unauthorized');
-      echo 'You must be authenticated to change the protection of files.';
+      echo 'Vous devez être connecté pour changer la permission des fichiers.';
       exit;
     }
   } else {
     header('WWW-Authenticate: Basic realm="My Realm"');
     header('HTTP/1.0 401 Unauthorized');
-    echo 'You must be authenticated to change the protection of files.';
+    echo 'Vous devez être connecté pour changer la permission des fichiers.';
     exit;
   }
 }
@@ -67,7 +67,7 @@ if(isset($_GET['excludefile'])) {
         file_put_contents($home."/BirdNET-Pi/scripts/disk_check_exclude.txt", "##start\n##end\n");
       }
       if(isset($_GET['exclude_add'])) {
-        $myfile = fopen($home."/BirdNET-Pi/scripts/disk_check_exclude.txt", "a") or die("Unable to open file!");
+        $myfile = fopen($home."/BirdNET-Pi/scripts/disk_check_exclude.txt", "a") or die("Impossible d'ouvrir le fichier !");
         $txt = $_GET['excludefile'];
         fwrite($myfile, $txt."\n");
         fwrite($myfile, $txt.".png\n");
@@ -91,13 +91,13 @@ if(isset($_GET['excludefile'])) {
     } else {
       header('WWW-Authenticate: Basic realm="My Realm"');
       header('HTTP/1.0 401 Unauthorized');
-      echo 'You must be authenticated to change the protection of files.';
+      echo 'Vous devez être connecté pour changer la permission des fichiers.';
       exit;
     }
   } else {
     header('WWW-Authenticate: Basic realm="My Realm"');
     header('HTTP/1.0 401 Unauthorized');
-    echo 'You must be authenticated to change the protection of files.';
+    echo 'Vous devez être connecté pour changer la permission des fichiers.';
     exit;
   }
 }
@@ -336,10 +336,10 @@ if(!isset($_GET['species']) && !isset($_GET['filename'])){
       <input type="hidden" name="view" value="Recordings">
       <input type="hidden" name="<?php echo $view; ?>" value="<?php echo $_GET['date']; ?>">
       <button <?php if(!isset($_GET['sort']) || $_GET['sort'] == "alphabetical"){ echo "style='background:#9fe29b !important;'"; }?> class="sortbutton" type="submit" name="sort" value="alphabetical">
-         <img src="images/sort_abc.svg" title="Sort by alphabetical" alt="Sort by alphabetical">
+         <img src="images/sort_abc.svg" title="Trier par ordre alphabetique" alt="Trier par ordre alphabetique">
       </button>
       <button <?php if(isset($_GET['sort']) && $_GET['sort'] == "occurrences"){ echo "style='background:#9fe29b !important;'"; }?> class="sortbutton" type="submit" name="sort" value="occurrences">
-         <img src="images/sort_occ.svg" title="Sort by occurrences" alt="Sort by occurrences">
+         <img src="images/sort_occ.svg" title="Trier par occurrences" alt="Trier par occurrences">
       </button>
    </form>
 </div>
@@ -356,7 +356,7 @@ if(!isset($_GET['species']) && !isset($_GET['filename'])){
       $date = $results['Date'];
       if(realpath($home."/BirdSongs/Extracted/By_Date/".$date) !== false){
         echo "<td>
-          <button action=\"submit\" name=\"date\" value=\"$date\">".($date == date('Y-m-d') ? "Today" : $date)."</button></td></tr>";}}
+          <button action=\"submit\" name=\"date\" value=\"$date\">".($date == date('Y-m-d') ? "Aujourd'hui" : $date)."</button></td></tr>";}}
 
           #By Species
   } elseif($view == "byspecies") {
@@ -433,8 +433,8 @@ for ($row = 0; $row < $num_rows; $row++) {
     #Choose
   } else {
     echo "<td>
-      <button action=\"submit\" name=\"byspecies\" value=\"byspecies\">By Species</button></td></tr>
-      <tr><td><button action=\"submit\" name=\"bydate\" value=\"bydate\">By Date</button></td>";
+      <button action=\"submit\" name=\"byspecies\" value=\"byspecies\">Par Espèce</button></td></tr>
+      <tr><td><button action=\"submit\" name=\"bydate\" value=\"bydate\">Par Date</button></td>";
   } 
 
   echo "</form>
@@ -451,13 +451,13 @@ if(isset($_GET['species'])){ ?>
       <input type="hidden" name="species" value="<?php echo $_GET['species']; ?>">
       <input type="hidden" name="sort" value="<?php echo $_GET['sort']; ?>">
       <button <?php if(!isset($_GET['sort']) || $_GET['sort'] == "" || $_GET['sort'] == "date"){ echo "style='background:#9fe29b !important;'"; }?> class="sortbutton" type="submit" name="sort" value="date">
-         <img width=35px src="images/sort_date.svg" title="Sort by date" alt="Sort by date">
+         <img width=35px src="images/sort_date.svg" title="Trier par date" alt="Trier par date">
       </button>
       <button <?php if(isset($_GET['sort']) && $_GET['sort'] == "confidence"){ echo "style='background:#9fe29b !important;'"; }?> class="sortbutton" type="submit" name="sort" value="confidence">
-         <img src="images/sort_occ.svg" title="Sort by confidence" alt="Sort by confidence">
+         <img src="images/sort_occ.svg" title="Trier par confiance" alt="Trier par confiance">
       </button><br>
       <input style="margin-top:10px" <?php if(isset($_GET['only_excluded'])){ echo "checked"; }?> type="checkbox" name="only_excluded" onChange="submit()">
-      <label for="onlyverified">Only Show Purge Excluded</label>
+      <label for="onlyverified">Montrer uniquement les fichiers exclu de la purge</label>
    </form>
 </div>
 <?php
@@ -529,29 +529,29 @@ echo "<table>
     if($config["FULL_DISK"] == "purge") {
       if(!in_array($filename_formatted, $disk_check_exclude_arr)) {
         $imageicon = "images/unlock.svg";
-        $title = "This file will be deleted when disk space needs to be freed (>95% usage).";
+        $title = "Ce fichier sera supprimé si le disque est presque plein (>95%).";
         $type = "add";
       } else {
         $imageicon = "images/lock.svg";
-        $title = "This file is excluded from being purged.";
+        $title = "Ce fichier est exclu de la purge.";
         $type = "del";
       }
 
       if(file_exists($shifted_path.$filename_formatted)) {
         $shiftImageIcon = "images/unshift.svg";
-        $shiftTitle = "This file has been shifted down in frequency."; 
+        $shiftTitle = "La fréquence de ce fichier a été réduite."; 
         $shiftAction = "unshift";
   $filename = $filename_shifted;
       } else {
         $shiftImageIcon = "images/shift.svg";
-        $shiftTitle = "This file is not shifted in frequency.";
+        $shiftTitle = "La fréquence de ce fichier n'a pas été réduite.";
         $shiftAction = "shift";
       }
 
       echo "<tr>
   <td class=\"relative\"> 
 
-<img style='cursor:pointer;right:90px' src='images/delete.svg' onclick='deleteDetection(\"".$filename_formatted."\")' class=\"copyimage\" width=25 title='Delete Detection'> 
+<img style='cursor:pointer;right:90px' src='images/delete.svg' onclick='deleteDetection(\"".$filename_formatted."\")' class=\"copyimage\" width=25 title='Supprimer cette détection'> 
 <img style='cursor:pointer;right:45px' onclick='toggleLock(\"".$filename_formatted."\",\"".$type."\", this)' class=\"copyimage\" width=25 title=\"".$title."\" src=\"".$imageicon."\"> 
 <img style='cursor:pointer' onclick='toggleShiftFreq(\"".$filename_formatted."\",\"".$shiftAction."\", this)' class=\"copyimage\" width=25 title=\"".$shiftTitle."\" src=\"".$shiftImageIcon."\"> $date $time<br>$confidence<br>
 
@@ -561,19 +561,19 @@ echo "<table>
     } else {
       echo "<tr>
   <td class=\"relative\">$date $time<br>$confidence
-<img style='cursor:pointer' src='images/delete.svg' onclick='deleteDetection(\"".$filename_formatted."\")' class=\"copyimage\" width=25 title='Delete Detection'><br>
+<img style='cursor:pointer' src='images/delete.svg' onclick='deleteDetection(\"".$filename_formatted."\")' class=\"copyimage\" width=25 title='Supprimer cette détection'><br>
         ".$imageelem."
         </td>
         </tr>";
     }
 
-  }if($iter == 0){ echo "<tr><td><b>No recordings were found.</b><br><br><span style='font-size:medium'>They may have been deleted to make space for new recordings. You can prevent this from happening in the future by clicking the <img src='images/unlock.svg' style='width:20px'> icon in the top right of a recording.<br>You can also modify this behavior globally under \"Full Disk Behavior\" <a href='views.php?view=Advanced'>here.</a></span></td></tr>";}echo "</table>";}
+  }if($iter == 0){ echo "<tr><td><b>Pas d'enregistrement trouvé.</b><br><br><span style='font-size:medium'>Ils ont pu être supprimé pour faire de la place pour de nouveaux enregistrements. Vous pouvez empêcher cela d'arriver dans le futur en cliquant l'icone <img src='images/unlock.svg' style='width:20px'> en haut à droite d'un enregistrement.<br>Vous pouvez aussi modifier le comportement global \"Full Disk Behavior\" <a href='views.php?view=Advanced'>ici.</a></span></td></tr>";}echo "</table>";}
 
   if(isset($_GET['filename'])){
     $name = $_GET['filename'];
     $statement2 = $db->prepare("SELECT * FROM detections where File_name == \"$name\" ORDER BY Date DESC, Time DESC");
     if($statement2 == False){
-      echo "Database is busy";
+      echo "La base de donnée est occupée";
       header("refresh: 0;");
     }
     $result2 = $statement2->execute();
@@ -626,7 +626,7 @@ echo "<table>
           echo "<tr>
       <td class=\"relative\"> 
 
-<img style='cursor:pointer;right:90px' src='images/delete.svg' onclick='deleteDetection(\"".$filename_formatted."\", true)' class=\"copyimage\" width=25 title='Delete Detection'> 
+<img style='cursor:pointer;right:90px' src='images/delete.svg' onclick='deleteDetection(\"".$filename_formatted."\", true)' class=\"copyimage\" width=25 title='Supprimer cette détection'> 
 <img style='cursor:pointer;right:45px' onclick='toggleLock(\"".$filename_formatted."\",\"".$type."\", this)' class=\"copyimage\" width=25 title=\"".$title."\" src=\"".$imageicon."\"> 
 <img style='cursor:pointer' onclick='toggleShiftFreq(\"".$filename_formatted."\",\"".$shiftAction."\", this)' class=\"copyimage\" width=25 title=\"".$shiftTitle."\" src=\"".$shiftImageIcon."\">$date $time<br>$confidence<br>
 
@@ -635,7 +635,7 @@ echo "<table>
         } else {
           echo "<tr>
       <td class=\"relative\">$date $time<br>$confidence
-<img style='cursor:pointer' src='images/delete.svg' onclick='deleteDetection(\"".$filename_formatted."\", true)' class=\"copyimage\" width=25 title='Delete Detection'><br>
+<img style='cursor:pointer' src='images/delete.svg' onclick='deleteDetection(\"".$filename_formatted."\", true)' class=\"copyimage\" width=25 title='Supprimer cette détection'><br>
             <video onplay='setLiveStreamVolume(0)' onended='setLiveStreamVolume(1)' onpause='setLiveStreamVolume(1)' controls poster=\"$filename_png\" preload=\"none\" title=\"$filename\"><source src=\"$filename\"></video></td>
             </tr>";
         }

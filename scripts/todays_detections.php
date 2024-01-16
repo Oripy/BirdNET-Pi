@@ -315,8 +315,8 @@ if(isset($_GET['ajax_detections']) && $_GET['ajax_detections'] == "true"  ) {
         <?php if(isset($_GET['display_limit']) && is_numeric($_GET['display_limit'])){ ?>
           <tr class="relative" id="<?php echo $iterations; ?>">
           <td class="relative">
-            <img style='cursor:pointer;right:45px' src='images/delete.svg' onclick='deleteDetection("<?php echo $filename_formatted; ?>")' class="copyimage" width=25 title='Delete Detection'>
-            <a target="_blank" href="index.php?filename=<?php echo $todaytable['File_Name']; ?>"><img class="copyimage" title="Open in new tab" width=25 src="images/copy.png"></a>
+            <img style='cursor:pointer;right:45px' src='images/delete.svg' onclick='deleteDetection("<?php echo $filename_formatted; ?>")' class="copyimage" width=25 title='Supprimer cette détection'>
+            <a target="_blank" href="index.php?filename=<?php echo $todaytable['File_Name']; ?>"><img class="copyimage" title="Ouvrir dans un nouvel onglet" width=25 src="images/copy.png"></a>
         
             
           <div class="centered_image_container">
@@ -325,9 +325,9 @@ if(isset($_GET['ajax_detections']) && $_GET['ajax_detections'] == "true"  ) {
             <?php } ?>
 
             <?php echo $todaytable['Time'];?><br> 
-          <b><a class="a2" href="https://allaboutbirds.org/guide/<?php echo $comname;?>" target="top"><?php echo $todaytable['Com_Name'];?></a></b><img style="height: 1em;cursor:pointer" title="View species stats" onclick="generateMiniGraph(this, '<?php echo $comname; ?>')" width=25 src="images/chart.svg"><br>
+          <b><a class="a2" href="https://allaboutbirds.org/guide/<?php echo $comname;?>" target="top"><?php echo $todaytable['Com_Name'];?></a></b><img style="height: 1em;cursor:pointer" title="Voir les statistiques pour cette espèce" onclick="generateMiniGraph(this, '<?php echo $comname; ?>')" width=25 src="images/chart.svg"><br>
           <a class="a2" href="https://wikipedia.org/wiki/<?php echo $sciname;?>" target="top"><i><?php echo $todaytable['Sci_Name'];?></i></a><br>
-          <b>Confidence:</b> <?php echo round((float)round($todaytable['Confidence'],2) * 100 ) . '%';?><br></div><br>
+          <b>Confiance:</b> <?php echo round((float)round($todaytable['Confidence'],2) * 100 ) . '%';?><br></div><br>
           <video onplay='setLiveStreamVolume(0)' onended='setLiveStreamVolume(1)' onpause='setLiveStreamVolume(1)' controls poster="<?php echo $filename.".png";?>" preload="none" title="<?php echo $filename;?>"><source preload="none" src="<?php echo $filename;?>"></video>
           </td>
         <?php } else { //legacy mode ?>
@@ -347,13 +347,13 @@ if(isset($_GET['ajax_detections']) && $_GET['ajax_detections'] == "true"  ) {
                     if (isset($_GET['mobile'])) {
 						?>
                             <br>
-                            <img style="height: 1em;cursor:pointer;float:unset;display:inline" title="View species stats" onclick="generateMiniGraph(this, '<?php echo $comname; ?>')" width=25 src="images/chart.svg">
-                            <a target="_blank" href="index.php?filename=<?php echo $todaytable['File_Name']; ?>"><img style="height: 1em;cursor:pointer;float:unset;display:inline" class="copyimage-mobile" title="Open in new tab" width=16 src="images/copy.png"></a>'
+                            <img style="height: 1em;cursor:pointer;float:unset;display:inline" title="Voir les statistiques pour cette espèce" onclick="generateMiniGraph(this, '<?php echo $comname; ?>')" width=25 src="images/chart.svg">
+                            <a target="_blank" href="index.php?filename=<?php echo $todaytable['File_Name']; ?>"><img style="height: 1em;cursor:pointer;float:unset;display:inline" class="copyimage-mobile" title="Ouvrir dans un nouvel onglet" width=16 src="images/copy.png"></a>'
 						<?php
                     }else{
                         //Else just put the species stats icon
                         ?>
-						    <img style="height: 1em;cursor:pointer;float:unset;display:inline" title="View species stats" onclick="generateMiniGraph(this, '<?php echo $comname; ?>')" width=25 src="images/chart.svg">
+						    <img style="height: 1em;cursor:pointer;float:unset;display:inline" title="Voir les statistiques pour cette espèce" onclick="generateMiniGraph(this, '<?php echo $comname; ?>')" width=25 src="images/chart.svg">
                         <?php
 					}
                 ?>
@@ -362,7 +362,7 @@ if(isset($_GET['ajax_detections']) && $_GET['ajax_detections'] == "true"  ) {
             </div>
           </div>
           </td>
-          <td><b>Confidence:</b> <?php echo round((float)round($todaytable['Confidence'],2) * 100 ) . '%';?><br></td>
+          <td><b>Confiance:</b> <?php echo round((float)round($todaytable['Confidence'],2) * 100 ) . '%';?><br></td>
           <?php if(!isset($_GET['mobile'])) { ?>
               <td style="min-width:180px"><audio controls preload="none" title="<?php echo $filename;?>"><source preload="none" src="<?php echo $filename;?>"></audio></td>
           <?php } ?>
@@ -373,13 +373,13 @@ if(isset($_GET['ajax_detections']) && $_GET['ajax_detections'] == "true"  ) {
 
   <?php 
   if($iterations == 0) {
-    echo "<h3>No Detections For Today.</h3>";
+    echo "<h3>Pas de détection aujourd'hui.</h3>";
   }
   
   // don't show the button if there's no more detections to be displayed, we're at the end of the list
   if($iterations >= 40 && isset($_GET['display_limit']) && is_numeric($_GET['display_limit'])) { ?>
   <center>
-  <button class="loadmore" onclick="loadDetections(<?php echo $_GET['display_limit'] + 40; ?>, this);" value="Today's Detections">Load 40 More...</button>
+  <button class="loadmore" onclick="loadDetections(<?php echo $_GET['display_limit'] + 40; ?>, this);" value="Détections du jour">Charger 40 de plus...</button>
   </center>
   <?php }
 
@@ -431,8 +431,8 @@ die();
   overflow-y: auto;overscroll-behavior:contain" id="attribution-dialog">
     <h1 id="modalHeading"></h1>
     <p id="modalText"></p>
-    <button style="font-weight:bold;color:blue" onclick="hideDialog()">Close</button>
-    <button style="font-weight:bold;color:blue" onclick="if(confirm('Are you sure you want to blacklist this image?')) { blacklistImage(); }">Blacklist this image</button>
+    <button style="font-weight:bold;color:blue" onclick="hideDialog()">Fermer</button>
+    <button style="font-weight:bold;color:blue" onclick="if(confirm('Etes vous sûr de vouloir bloquer cette image ?')) { blacklistImage(); }">Ne plus voir cette image</button>
   </dialog>
   <script src="static/dialog-polyfill.js"></script>
   <script src="static/Chart.bundle.js"></script>
@@ -440,7 +440,7 @@ die();
   
   <script>
     function deleteDetection(filename,copylink=false) {
-    if (confirm("Are you sure you want to delete this detection from the database?") == true) {
+    if (confirm("Etes vous sûr de supprimer cette détection de la base de donnée ?") == true) {
       const xhttp = new XMLHttpRequest();
       xhttp.onload = function() {
         if(this.responseText == "OK"){
@@ -450,7 +450,7 @@ die();
             location.reload();
           }
         } else {
-          alert("Database busy.")
+          alert("Base de donnée occupée.")
         }
       }
       xhttp.open("GET", "play.php?deletefile="+filename, true);
@@ -496,14 +496,14 @@ die();
     showDialog();
   }
   </script>  
-    <h3>Number of Detections</h3>
+    <h3>Nombre de Détections</h3>
     <div id="todaystats"><table>
       <tr>
   <th>Total</th>
-  <th>Today</th>
-  <th>Last Hour</th>
-  <th>Unique Species Total</th>
-  <th>Unique Species Today</th>
+  <th>Aujourd'hui</th>
+  <th>Dernière Heure</th>
+  <th>Espèces Uniques Total</th>
+  <th>Espèces Uniques Aujourd'hui</th>
       </tr>
       <tr>
       <td><?php echo $totalcount['COUNT(*)'];?></td>
@@ -521,12 +521,12 @@ die();
     </table></div>
 
 
-    <h3>Today's Detections <?php if($kiosk == false) { ?>— <input autocomplete="off" size="11" type="text" placeholder="Search..." id="searchterm" name="searchterm"><?php } ?></h3>
+    <h3>Today's Detections <?php if($kiosk == false) { ?>— <input autocomplete="off" size="11" type="text" placeholder="Recherche..." id="searchterm" name="searchterm"><?php } ?></h3>
 
-    <div style="padding-bottom:10px" id="detections_table"><h3>Loading...</h3></div>
+    <div style="padding-bottom:10px" id="detections_table"><h3>Chargement...</h3></div>
 
     <?php if($kiosk == false) { ?>
-    <button onclick="switchViews(this);" class="legacyview">Legacy view</button>
+    <button onclick="switchViews(this);" class="legacyview">Ancienne visualisation</button>
     <?php } ?>
 
 </div>
@@ -573,22 +573,22 @@ document.getElementById("searchterm").onkeydown = (function(e) {
 
 function switchViews(element) {
   if(searchterm == ""){
-    document.getElementById("detections_table").innerHTML = "<h3>Loading <?php echo $todaycount['COUNT(*)']; ?> detections...</h3>";
+    document.getElementById("detections_table").innerHTML = "<h3>Chargement de <?php echo $todaycount['COUNT(*)']; ?> détections...</h3>";
   } else {
-    document.getElementById("detections_table").innerHTML = "<h3>Loading...</h3>";
+    document.getElementById("detections_table").innerHTML = "<h3>Chargement...</h3>";
   }
-  if(element.innerHTML == "Legacy view") {
-    element.innerHTML = "Normal view";
+  if(element.innerHTML == "Ancienne visualisation") {
+    element.innerHTML = "Vue standard";
     loadDetections(undefined);
-  } else if(element.innerHTML == "Normal view") {
-    element.innerHTML = "Legacy view";
+  } else if(element.innerHTML == "Vue standard") {
+    element.innerHTML = "Ancienne visualisation";
     loadDetections(40);
   }
 }
 function searchDetections(searchvalue) {
-    document.getElementById("detections_table").innerHTML = "<h3>Loading...</h3>";
+    document.getElementById("detections_table").innerHTML = "<h3>Chargement...</h3>";
     searchterm = searchvalue;
-    if(document.getElementsByClassName('legacyview')[0].innerHTML == "Normal view") {
+    if(document.getElementsByClassName('legacyview')[0].innerHTML == "Vue standard") {
       loadDetections(undefined,undefined);  
     } else {
       loadDetections(40,undefined);
@@ -723,7 +723,7 @@ function generateMiniGraph(elem, comname) {
           },
           title: {
             display: true,
-            text: 'Detections Over 30d'
+            text: 'Détections sur 30 jours'
           },
           legend: {
             display: false

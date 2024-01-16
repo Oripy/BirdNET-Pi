@@ -74,31 +74,31 @@ elseif ($config["LONGITUDE"] == "0.000") {
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <div class="topnav" id="myTopnav">
 <form action="" method="GET" id="views">
-  <button type="submit" name="view" value="Overview" form="views">Overview</button>
+  <button type="submit" name="view" value="Overview" form="views">Vue globale</button>
 </form>
 <form action="" method="GET" id="views">
-  <button type="submit" name="view" value="Todays Detections" form="views">Today's Detections</button>
+  <button type="submit" name="view" value="Todays Detections" form="views">Détections du jour</button>
 </form>
 <form action="" method="GET" id="views">
-  <button type="submit" name="view" value="Spectrogram" form="views">Spectrogram</button>
+  <button type="submit" name="view" value="Spectrogram" form="views">Spectrogramme</button>
 </form>
 <form action="" method="GET" id="views">
-  <button type="submit" name="view" value="Species Stats" form="views">Best Recordings</button>
+  <button type="submit" name="view" value="Species Stats" form="views">Meilleurs enregistrements</button>
 </form>
 <form action="" method="GET" id="views">
-  <button type="submit" name="view" value="Streamlit" form="views">Species Stats</button>
+  <button type="submit" name="view" value="Streamlit" form="views">Statistiques par Espèces</button>
 </form>
 <form action="" method="GET" id="views">
-  <button type="submit" name="view" value="Daily Charts" form="views">Daily Charts</button>
+  <button type="submit" name="view" value="Daily Charts" form="views">Graphiques Journaliers</button>
 </form>
 <form action="" method="GET" id="views">
-  <button type="submit" name="view" value="Recordings" form="views">Recordings</button>
+  <button type="submit" name="view" value="Recordings" form="views">Enregistrements</button>
 </form>
 <form action="" method="GET" id="views">
-  <button type="submit" name="view" value="View Log" form="views">View Log</button>
+  <button type="submit" name="view" value="View Log" form="views">Journal</button>
 </form>
 <form action="" id="toolsbtn" method="GET" id="views">
-  <button type="submit" name="view" value="Tools" form="views">Tools<?php if(isset($_SESSION['behind']) && intval($_SESSION['behind']) >= 50 && ($config['SILENCE_UPDATE_INDICATOR'] != 1)){ $updatediv = ' <div class="updatenumber">'.$_SESSION["behind"].'</div>'; } else { $updatediv = ""; } echo $updatediv; ?></button>
+  <button type="submit" name="view" value="Tools" form="views">Outils<?php if(isset($_SESSION['behind']) && intval($_SESSION['behind']) >= 50 && ($config['SILENCE_UPDATE_INDICATOR'] != 1)){ $updatediv = ' <div class="updatenumber">'.$_SESSION["behind"].'</div>'; } else { $updatediv = ""; } echo $updatediv; ?></button>
 </form>
 <button href="javascript:void(0);" class="icon" onclick="myFunction()"><img src="images/menu.png"></button>
 </div>
