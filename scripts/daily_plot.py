@@ -82,7 +82,7 @@ plot.set(xlabel="Détections")
 
 
 # Generate crosstab matrix for heatmap plot
-heat = pd.crosstab(df_plt_top10_today['Com_Name'], df_plt_top10_today['Heure de la journée'])
+heat = pd.crosstab(df_plt_top10_today['Com_Name'], df_plt_top10_today['Hour of Day'])
 
 # Order heatmap Birds by frequency of occurrance
 heat.index = pd.CategoricalIndex(heat.index, categories=freq_order)
@@ -125,7 +125,7 @@ for _, spine in plot.spines.items():
     spine.set_visible(True)
 
 plot.set(ylabel=None)
-plot.set(xlabel="Hour of Day")
+plot.set(xlabel="Heure du Jour")
 # Set combined plot layout and titles
 f.subplots_adjust(top=0.9)
 plt.suptitle("10 Meilleures espèces (Mise à jour : " + str(now.strftime("%Y-%m-%d %H:%M")) + ')')
@@ -173,7 +173,7 @@ plot.set(xlabel="Détections")
 
 # Generate crosstab matrix for heatmap plot
 
-heat = pd.crosstab(df_plt_Bot10_today['Com_Name'], df_plt_Bot10_today['Heure de la journée'])
+heat = pd.crosstab(df_plt_Bot10_today['Com_Name'], df_plt_Bot10_today['Hour of Day'])
 # Order heatmap Birds by frequency of occurrance
 heat.index = pd.CategoricalIndex(heat.index, categories=freq_order)
 heat.sort_index(level=0, inplace=True)
@@ -205,7 +205,7 @@ for _, spine in plot.spines.items():
     spine.set_visible(True)
 
 plot.set(ylabel=None)
-plot.set(xlabel="Hour of Day")
+plot.set(xlabel="Heure du Jour")
 # Set combined plot layout and titles
 f.subplots_adjust(top=0.9)
 plt.suptitle("10 Dernières espèces (Mise à jour : " + str(now.strftime("%Y-%m-%d %H:%M")) + ')')
