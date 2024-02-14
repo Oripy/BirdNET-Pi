@@ -129,7 +129,7 @@ else:
                       '1 minute': '1min',
                       '15 minutes': '15min',
                       'Par heure': '1H',
-                      'DAILY': '1D'
+                      'Journalier': '1D'
                       }
     resample_time = resample_times[resample_sel]
 
