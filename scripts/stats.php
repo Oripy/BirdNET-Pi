@@ -195,7 +195,7 @@ while($results=$result3->fetchArray(SQLITE3_ASSOC)){
   $filename = "/By_Date/".$date."/".$comname."/".$results['File_Name'];
   echo str_pad("<h3>$species</h3>
     <table><tr>
-  <td class=\"relative\"><a target=\"_blank\" href=\"index.php?filename=".$results['File_Name']."\"><img title=\"Ouvrir dans un nouvel onglet\" class=\"copyimage\" width=25 src=\"images/copy.png\"></a> <a href=\"https://wikipedia.org/wiki/$dbsciname\" target=\"top\"/><i>$sciname</i></a><br>
+  <td class=\"relative\"><a target=\"_blank\" href=\"index.php?filename=".$results['File_Name']."\"><img title=\"Ouvrir dans un nouvel onglet\" class=\"copyimage\" width=25 src=\"images/copy.png\"></a> <a href=\"https://fr.wikipedia.org/wiki/$dbsciname\" target=\"top\"/><i>$sciname</i></a><br>
   <b>Occurrences : </b>$count<br>
   <b>Confiance Max : </b>$maxconf<br>
   <b>Meilleurs enregistrements : </b>$date $time<br>
