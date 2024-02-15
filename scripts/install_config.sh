@@ -43,7 +43,7 @@ LONGITUDE=$LONGITUDE
 #______________________used for detecting bird audio.__________________________#
 #_It's recommended that you only change these values through the web interface.#
 
-MODEL=BirdNET_6K_GLOBAL_MODEL
+MODEL=BirdNET_GLOBAL_6K_V2.4_Model_FP16
 SF_THRESH=0.03
 
 #---------------------  BirdWeather Station Information -----------------------#
@@ -246,6 +246,9 @@ CUSTOM_IMAGE_TITLE=""
 LAST_RUN=
 THIS_RUN=
 IDFILE=$HOME/BirdNET-Pi/IdentifiedSoFar.txt
+LogLevel_BirdnetRecordingService="error"
+LogLevel_LiveAudioStreamService="error"
+LogLevel_SpectrogramViewerService="error"
 EOF
 }
 

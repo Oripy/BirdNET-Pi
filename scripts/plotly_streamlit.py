@@ -14,6 +14,18 @@ from sklearn.preprocessing import normalize
 from suntime import Sun
 from datetime import datetime
 
+profile = False
+if profile:
+    try:
+        from pyinstrument import Profiler
+    except ImportError as e:
+        print(e)
+        profile = False
+    else:
+        profiler = Profiler()
+        profiler.start()
+
+
 pio.templates.default = "plotly_white"
 
 userDir = os.path.expanduser('~')
@@ -45,15 +57,13 @@ def get_connection(path: str):
     return sqlite3.connect(path, check_same_thread=False)
 
 
-@st.cache_resource()
 def get_data(_conn: Connection):
     df1 = pd.read_sql("SELECT * FROM detections", con=conn)
     return df1
 
 
 conn = get_connection(URI_SQLITE_DB)
-df = get_data(conn)
-df2 = df.copy()
+df2 = get_data(conn)
 df2['DateTime'] = pd.to_datetime(df2['Date'] + " " + df2['Time'])
 df2 = df2.set_index('DateTime')
 
@@ -170,9 +180,10 @@ top_N_species = (df5.value_counts()[:top_N])
 
 font_size = 15
 
+
 def sunrise_sunset_scatter(num_days_to_display):
-    latitude = df['Lat'][0]
-    longitude = df['Lon'][0]
+    latitude = df2['Lat'][0]
+    longitude = df2['Lon'][0]
 
     sun = Sun(latitude, longitude)
 
@@ -209,11 +220,12 @@ def sunrise_sunset_scatter(num_days_to_display):
     sunrise_week_list.append(None)
     sunrise_list.append(None)
     sunrise_text_list.append(None)
-    sun_list = sunrise_list.extend(sunset_list)
-    sun_week_list = sunrise_week_list.extend(sunset_week_list)
+    sunrise_list.extend(sunset_list)
+    sunrise_week_list.extend(sunset_week_list)
     sunrise_text_list.extend(sunset_text_list)
 
     return sunrise_week_list, sunrise_list, sunrise_text_list
+
 
 def hms_to_dec(t):
     # (h, m, s) = t.split(':')
@@ -222,6 +234,7 @@ def hms_to_dec(t):
     s = t.second / 3600
     result = h + m + s
     return result
+
 
 def hms_to_str(t):
     # (h, m, s) = t.split(':')
@@ -470,10 +483,10 @@ if daily is False:
         y_downscale_factor = int(len(saved_time_labels) / number_of_y_ticks)
         fig.update_layout(
             yaxis=dict(
-                tickmode = 'array',
-                tickvals = day_hour_freq.columns[::y_downscale_factor],
-                ticktext = saved_time_labels[::y_downscale_factor],
-                nticks = 6
+                tickmode='array',
+                tickvals=day_hour_freq.columns[::y_downscale_factor],
+                ticktext=saved_time_labels[::y_downscale_factor],
+                nticks=6
             )
         )
         st.plotly_chart(fig, use_container_width=True)  # , config=config)
@@ -536,3 +549,7 @@ else:
 # audio_file = open('/home/*/BirdSongs/Extracted/By_Date/2022-03-22/Yellow-streaked_Greenbul/Yellow-streaked_Greenbul-77-2022-03-22-birdnet-15:04:28.mp3', 'rb')
 # audio_bytes = audio_file.read()
 # cols4.audio(audio_bytes, format='audio/mp3')
+if profile:
+    profiler.stop()
+    profiler.print()
+    print('**profiler done**', flush=True)

@@ -4,6 +4,7 @@ import socket
 import sqlite3
 from datetime import datetime
 import requests
+import html
 import time as timeim
 
 userDir = os.path.expanduser('~')
@@ -46,15 +47,15 @@ def sendAppriseNotifications(species, confidence, confidencepct, path,
     # print(settings_dict)
     if os.path.exists(APPRISE_CONFIG) and os.path.getsize(APPRISE_CONFIG) > 0:
 
-        title = settings_dict.get('APPRISE_NOTIFICATION_TITLE')
-        body = settings_dict.get('APPRISE_NOTIFICATION_BODY')
+        title = html.unescape(settings_dict.get('APPRISE_NOTIFICATION_TITLE'))
+        body = html.unescape(settings_dict.get('APPRISE_NOTIFICATION_BODY'))
         sciName, comName = species.split("_")
 
         APPRISE_ONLY_NOTIFY_SPECIES_NAMES = settings_dict.get('APPRISE_ONLY_NOTIFY_SPECIES_NAMES')
         if APPRISE_ONLY_NOTIFY_SPECIES_NAMES is not None and APPRISE_ONLY_NOTIFY_SPECIES_NAMES.strip() != "":
             if any(bird.lower().replace(" ", "") in comName.lower().replace(" ", "") for bird in APPRISE_ONLY_NOTIFY_SPECIES_NAMES.split(",")):
                 return
-                
+
         APPRISE_ONLY_NOTIFY_SPECIES_NAMES_2 = settings_dict.get('APPRISE_ONLY_NOTIFY_SPECIES_NAMES_2')
         if APPRISE_ONLY_NOTIFY_SPECIES_NAMES_2 is not None and APPRISE_ONLY_NOTIFY_SPECIES_NAMES_2.strip() != "":
             if not any(bird.lower().replace(" ", "") in comName.lower().replace(" ", "") for bird in APPRISE_ONLY_NOTIFY_SPECIES_NAMES_2.split(",")):
@@ -86,9 +87,10 @@ def sendAppriseNotifications(species, confidence, confidencepct, path,
                 try:
                     # TODO: Make this work with non-english comnames. Implement the "// convert sci name to English name" logic from overview.php here
                     headers = {'User-Agent': 'Python_Flickr/1.0'}
-                    url = 'https://www.flickr.com/services/rest/?method=flickr.photos.search&api_key='+str(settings_dict.get('FLICKR_API_KEY'))+'&text='+str(comName)+' bird&sort=relevance&per_page=5&media=photos&format=json&license=2%2C3%2C4%2C5%2C6%2C9&nojsoncallback=1'
-                    resp = requests.get(url=url, headers=headers)
-                    
+                    url = ('https://www.flickr.com/services/rest/?method=flickr.photos.search&api_key=' + str(settings_dict.get('FLICKR_API_KEY')) +
+                           '&text=' + str(comName) + ' bird&sort=relevance&per_page=5&media=photos&format=json&license=2%2C3%2C4%2C5%2C6%2C9&nojsoncallback=1')
+                    resp = requests.get(url=url, headers=headers, timeout=10)
+
                     resp.encoding = "utf-8"
                     data = resp.json()["photos"]["photo"][0]
 

@@ -29,6 +29,11 @@ $user = shell_exec("awk -F: '/1000/{print $1}' /etc/passwd");
 $user = trim($user);
 $home = shell_exec("awk -F: '/1000/{print $6}' /etc/passwd");
 $home = trim($home);
+function service_mount() {
+  global $home;
+  $service_mount=trim(shell_exec("systemd-escape -p --suffix=mount ".$home."/BirdSongs/StreamData"));
+  return $service_mount;
+}
 if(!isset($_SESSION['behind'])) {
   $fetch = shell_exec("sudo -u".$user." git -C ".$home."/BirdNET-Pi fetch 2>&1");
   $str = trim(shell_exec("sudo -u".$user." git -C ".$home."/BirdNET-Pi status"));
@@ -197,7 +202,7 @@ if(isset($_GET['view'])){
       file_put_contents("$file", "$str");
       if(isset($_GET['species'])){
         foreach ($_GET['species'] as $selectedOption)
-          file_put_contents("./scripts/include_species_list.txt", $selectedOption."\n", FILE_APPEND);
+          file_put_contents("./scripts/include_species_list.txt", htmlspecialchars_decode($selectedOption, ENT_QUOTES)."\n", FILE_APPEND);
       }
     } elseif(isset($_GET['species']) && isset($_GET['del'])){
       $file = './scripts/include_species_list.txt';
@@ -207,6 +212,7 @@ if(isset($_GET['view'])){
       foreach($_GET['species'] as $selectedOption) {
         $content = file_get_contents("../BirdNET-Pi/include_species_list.txt");
         $newcontent = str_replace($selectedOption, "", "$content");
+        $newcontent = str_replace(htmlspecialchars_decode($selectedOption, ENT_QUOTES), "", "$newcontent");
         file_put_contents("./scripts/include_species_list.txt", "$newcontent");
       }
       $file = './scripts/include_species_list.txt';
@@ -223,7 +229,7 @@ if(isset($_GET['view'])){
       $str = preg_replace("/(^[\r\n]*|[\r\n]+)[\s\t]*[\r\n]+/", "\n", $str);
       file_put_contents("$file", "$str");
       foreach ($_GET['species'] as $selectedOption)
-        file_put_contents("./scripts/exclude_species_list.txt", $selectedOption."\n", FILE_APPEND);
+        file_put_contents("./scripts/exclude_species_list.txt", htmlspecialchars_decode($selectedOption, ENT_QUOTES)."\n", FILE_APPEND);
     } elseif (isset($_GET['species']) && isset($_GET['del'])){
       $file = './scripts/exclude_species_list.txt';
       $str = file_get_contents("$file");
@@ -232,6 +238,7 @@ if(isset($_GET['view'])){
       foreach($_GET['species'] as $selectedOption) {
         $content = file_get_contents("./scripts/exclude_species_list.txt");
         $newcontent = str_replace($selectedOption, "", "$content");
+        $newcontent = str_replace(htmlspecialchars_decode($selectedOption, ENT_QUOTES), "", "$content");
         file_put_contents("./scripts/exclude_species_list.txt", "$newcontent");
       }
       $file = './scripts/exclude_species_list.txt';
@@ -297,14 +304,6 @@ if(isset($_GET['view'])){
                        'sudo systemctl restart birdnet_log.service',
                        'sudo systemctl disable --now birdnet_log.service',
                        'sudo systemctl enable --now birdnet_log.service',
-                       'sudo systemctl stop extraction.service',
-                       'sudo systemctl restart extraction.service',
-                       'sudo systemctl disable --now extraction.service',
-                       'sudo systemctl enable --now extraction.service',
-                       'sudo systemctl stop birdnet_server.service',
-                       'sudo systemctl restart birdnet_server.service',
-                       'sudo systemctl disable --now birdnet_server.service',
-                       'sudo systemctl enable --now birdnet_server.service',
                        'sudo systemctl stop birdnet_analysis.service',
                        'sudo systemctl restart birdnet_analysis.service',
                        'sudo systemctl disable --now birdnet_analysis.service',
@@ -325,6 +324,8 @@ if(isset($_GET['view'])){
                        'sudo systemctl restart spectrogram_viewer.service',
                        'sudo systemctl disable --now spectrogram_viewer.service',
                        'sudo systemctl enable --now spectrogram_viewer.service',
+                       'sudo systemctl enable '.service_mount().' && sudo reboot',
+                       'sudo systemctl disable '.service_mount().' && sudo reboot',
                        'stop_core_services.sh',
                        'restart_services.sh',
                        'sudo reboot',
