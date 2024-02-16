@@ -42,7 +42,7 @@ def create_plot(df_plt_today, now, is_top):
     df_plt_selection_today = df_plt_today[df_plt_today.Com_Name.isin(plt_selection_today.index)]
 
     # Set up plot axes and titles
-    f, axs = plt.subplots(1, 2, figsize=(10, 4), gridspec_kw=dict(width_ratios=[3, 6]), facecolor='#77C487')
+    f, axs = plt.subplots(1, 2, figsize=(10, 1+len(plt_selection_today)/3), gridspec_kw=dict(width_ratios=[3, 6]), facecolor='#77C487')
     plt.subplots_adjust(left=None, bottom=None, right=None, top=None, wspace=0, hspace=0)
 
     # generate y-axis order for all figures based on frequency
