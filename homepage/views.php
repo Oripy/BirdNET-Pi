@@ -97,6 +97,9 @@ elseif ($config["LONGITUDE"] == "0.000") {
   <button type="submit" name="view" value="Daily Charts" form="views">Graphiques Journaliers</button>
 </form>
 <form action="" method="GET" id="views">
+  <button type="submit" name="view" value="Weekly Report" form="views">Semaine</button>
+</form>
+<form action="" method="GET" id="views">
   <button type="submit" name="view" value="Recordings" form="views">Enregistrements</button>
 </form>
 <form action="" method="GET" id="views">

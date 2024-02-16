@@ -3,8 +3,8 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
-$startdate = strtotime('last sunday') - (7*86400);
-$enddate = strtotime('last sunday') - (1*86400);
+$startdate = strtotime('last monday') - (7*86400);
+$enddate = strtotime('last monday') - (1*86400);
 
 $debug = false;
 
