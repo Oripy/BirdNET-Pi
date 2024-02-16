@@ -20,7 +20,7 @@ $theDate = $_GET['date'];
 $theDate = date('Y-m-d');
 }
 $chart = "Combo-$theDate.png";
-$chart2 = "Combo2-$theDate.png";
+// $chart2 = "Combo2-$theDate.png";
 
 $db = new SQLite3('./scripts/birds.db', SQLITE3_OPEN_CREATE | SQLITE3_OPEN_READWRITE);
 
@@ -161,10 +161,11 @@ if (file_exists('./Charts/'.$chart)) {
   echo "<p>Pas de graphique pour $theDate</p>";
 }
 echo "<hr>";
-if (file_exists('./Charts/'.$chart2)) {
-  echo "<img src=\"/Charts/$chart2?nocache=$time\">";
-} else {
-  echo "<p>Pas de graphique pour $theDate</p>";
-}?>
+// if (file_exists('./Charts/'.$chart2)) {
+//   echo "<img src=\"/Charts/$chart2?nocache=$time\">";
+// } else {
+//   echo "<p>Pas de graphique pour $theDate</p>";
+// }
+?>
 </div>
 </html>

@@ -33,7 +33,7 @@ def get_data(now=None):
 
 
 def create_plot(df_plt_today, now, is_top):
-    readings = 10
+    readings = 100
     if is_top:
         plt_selection_today = (df_plt_today['Com_Name'].value_counts()[:readings])
     else:
@@ -59,13 +59,13 @@ def create_plot(df_plt_today, now, is_top):
         # Set Palette for graphics
         pal = "Greens"
         colors = plt.cm.Greens(norm(confmax))
-        plot_type = "meilleures"
+        plot_type = "Meilleures"
         name = "Combo"
     else:
         # Set Palette for graphics
         pal = "Reds"
         colors = plt.cm.Reds(norm(confmax))
-        plot_type = "moins fréquentes"
+        plot_type = "Moins fréquentes"
         name = "Combo2"
 
     # Generate frequency plot
@@ -107,7 +107,7 @@ def create_plot(df_plt_today, now, is_top):
     plot.set(xlabel="Heure du Jour")
     # Set combined plot layout and titles
     f.subplots_adjust(top=0.9)
-    plt.suptitle(f"{readings} {plot_type} espèces (Mise à jour : {now.strftime('%Y-%m-%d %H:%M')})")
+    plt.suptitle(f"{plot_type} espèces (Mise à jour : {now.strftime('%Y-%m-%d %H:%M')})")
 
     # Save combined plot
     save_name = os.path.expanduser(f"~/BirdSongs/Extracted/Charts/{name}-{now.strftime('%Y-%m-%d')}.png")
@@ -138,7 +138,7 @@ def main(daemon, sleep_m):
             data, time = get_data(now)
         if not data.empty:
             create_plot(data, time, is_top=True)
-            create_plot(data, time, is_top=False)
+            # create_plot(data, time, is_top=False)
         else:
             print('empty dataset')
         if daemon:
