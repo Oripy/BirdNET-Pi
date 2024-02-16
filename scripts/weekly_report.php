@@ -12,20 +12,20 @@ if(isset($_GET['ascii'])) {
 
 	$db = new SQLite3('./scripts/birds.db', SQLITE3_OPEN_CREATE | SQLITE3_OPEN_READWRITE);
 	if($db == False){
-	  echo "Database is busy";
+	  echo "Base de donnée occupée";
 	  header("refresh: 0;");
 	}
 
 	$statement1 = $db->prepare('SELECT DISTINCT(Com_Name), COUNT(*) FROM detections WHERE Date BETWEEN "'.date("Y-m-d",$startdate).'" AND "'.date("Y-m-d",$enddate).'" GROUP By Com_Name ORDER BY COUNT(*) DESC');
 	if($statement1 == False){
-	  echo "Database is busy";
+	  echo "Base de donnée occupée";
 	  header("refresh: 0;");
 	}
 	$result1 = $statement1->execute();
 
 	$statement4 = $db->prepare('SELECT DISTINCT(Com_Name), COUNT(*) FROM detections WHERE Date BETWEEN "'.date("Y-m-d",$startdate).'" AND "'.date("Y-m-d",$enddate).'"');
 	if($statement4 == False){
-	  echo "Database is busy";
+	  echo "Base de donnée occupée";
 	  header("refresh: 0;");
 	}
 	$result4 = $statement4->execute();
@@ -33,7 +33,7 @@ if(isset($_GET['ascii'])) {
 
 	$statement5 = $db->prepare('SELECT DISTINCT(Com_Name), COUNT(*) FROM detections WHERE Date BETWEEN "'.date("Y-m-d",$startdate- (7*86400)).'" AND "'.date("Y-m-d",$enddate- (7*86400)).'"');
 	if($statement5 == False){
-	  echo "Database is busy";
+	  echo "Base de donnée occupée";
 	  header("refresh: 0;");
 	}
 	$result5 = $statement5->execute();
@@ -41,7 +41,7 @@ if(isset($_GET['ascii'])) {
 
 	$statement6 = $db->prepare('SELECT COUNT(DISTINCT(Com_Name)) FROM detections WHERE Date BETWEEN "'.date("Y-m-d",$startdate).'" AND "'.date("Y-m-d",$enddate).'"');
 	if($statement6 == False){
-	  echo "Database is busy";
+	  echo "Base de donnée occupée";
 	  header("refresh: 0;");
 	}
 	$result6 = $statement6->execute();
@@ -49,7 +49,7 @@ if(isset($_GET['ascii'])) {
 
 	$statement7 = $db->prepare('SELECT COUNT(DISTINCT(Com_Name)) FROM detections WHERE Date BETWEEN "'.date("Y-m-d",$startdate- (7*86400)).'" AND "'.date("Y-m-d",$enddate- (7*86400)).'"');
 	if($statement7 == False){
-	  echo "Database is busy";
+	  echo "Base de donnée occupée";
 	  header("refresh: 0;");
 	}
 	$result7= $statement7->execute();
@@ -77,12 +77,12 @@ if(isset($_GET['ascii'])) {
 		$detections[$detection["Com_Name"]] = $detection["COUNT(*)"];
 	}
 
-	echo "# BirdNET-Pi: Week ".date('W', $enddate)." Report\n";
+	echo "# BirdNET-Pi: Rapport de la semaine ".date('W', $enddate)."\n";
 
-	echo "Total Detections: <b>".$totalcount."</b> (".$percentagedifftotal.")<br>";
-	echo "Unique Species Detected: <b>".$totalspeciestally."</b> (".$percentagedifftotaldistinctspecies.")<br><br>";
+	echo "Nombre total de détections : <b>".$totalcount."</b> (".$percentagedifftotal.")<br>";
+	echo "Nombre d'espèces détectées : <b>".$totalspeciestally."</b> (".$percentagedifftotaldistinctspecies.")<br><br>";
 
-	echo "= <b>Top 10 Species</b> =<br>";
+	echo "= <b>Top 10 :</b> =<br>";
 
 	$i = 0;
 	foreach($detections as $com_name=>$scount)
@@ -92,7 +92,7 @@ if(isset($_GET['ascii'])) {
 		if($i <= 10) {
 			$statement2 = $db->prepare('SELECT COUNT(*) FROM detections WHERE Com_Name == "'.$com_name.'" AND Date BETWEEN "'.date("Y-m-d",$startdate - (7*86400)).'" AND "'.date("Y-m-d",$enddate - (7*86400)).'"');
 			if($statement2 == False){
-			  echo "Database is busy";
+			  echo "Base de donnée occupée";
 			  header("refresh: 0;");
 			}
 			$result2 = $statement2->execute();
@@ -116,14 +116,14 @@ if(isset($_GET['ascii'])) {
 		}
 	}
 
-	echo "<br>= <b>Species Detected for the First Time</b> =<br>";
+	echo "<br>= <b>Espèces détectées pour la première fois</b> =<br>";
 
     $newspeciescount=0;
 	foreach($detections as $com_name=>$scount)
 	{
 		$statement3 = $db->prepare('SELECT COUNT(*) FROM detections WHERE Com_Name == "'.$com_name.'" AND Date NOT BETWEEN "'.date("Y-m-d",$startdate).'" AND "'.date("Y-m-d",$enddate).'"');
 		if($statement3 == False){
-		  echo "Database is busy";
+		  echo "Base de donnée occupée";
 		  header("refresh: 0;");
 		}
 		$result3 = $statement3->execute();
@@ -136,26 +136,26 @@ if(isset($_GET['ascii'])) {
 		}
 	}
 	if($newspeciescount == 0) {
-		echo "No new species were seen this week.";
+		echo "Pas de nouvelles espèces cette semaine.";
 	}
 
         $prevweek = date('W', $enddate) - 1;
         if($prevweek < 1) { $prevweek = 52; } 
 
-	echo "<hr><small>* data from ".date('Y-m-d', $startdate)." — ".date('Y-m-d',$enddate).".</small><br>";
-	echo '<small>* percentages are calculated relative to week '.($prevweek).'.</small>';
+	echo "<hr><small>* données du ".date('Y-m-d', $startdate)." au ".date('Y-m-d',$enddate).".</small><br>";
+	echo '<small>* les pourcentages sont calculés par rapport à la semaine '.($prevweek).'.</small>';
 
 	die();
 }
 
 ?>
 <div class="brbanner"> <?php
-echo "<h1>Week ".date('W', $enddate)." Report</h1>".date('F jS, Y',$startdate)." — ".date('F jS, Y',$enddate)."<br>";
+echo "<h1>Semaine ".date('W', $enddate)."</h1>".date('F jS, Y',$startdate)." — ".date('F jS, Y',$enddate)."<br>";
 ?></div><?php
 
 $db = new SQLite3('./scripts/birds.db', SQLITE3_OPEN_CREATE | SQLITE3_OPEN_READWRITE);
 if($db == False){
-  echo "Database is busy";
+  echo "Base de donnée occupée";
   header("refresh: 0;");
 }
 
@@ -165,7 +165,7 @@ $statement1 = $db->prepare('SELECT DISTINCT(Com_Name), COUNT(*) FROM detections 
 	$statement1 = $db->prepare('SELECT DISTINCT(Com_Name), COUNT(*) FROM detections WHERE Date BETWEEN "'.date("Y-m-d",$startdate).'" AND "'.date("Y-m-d",$enddate).'" GROUP By Com_Name ORDER BY COUNT(*) ASC');
 }
 if($statement1 == False){
-  echo "Database is busy";
+  echo "Base de donnée occupée";
   header("refresh: 0;");
 }
 $result1 = $statement1->execute();
@@ -190,7 +190,7 @@ while($detection=$result1->fetchArray(SQLITE3_ASSOC))
 	<table>
 	<thead>
 		<tr>
-			<th><?php echo "Top 10 Species: <br>"; ?></th>
+			<th><?php echo "Top 10 : <br>"; ?></th>
 		</tr>
 	</thead>
 	<tbody>
@@ -203,7 +203,7 @@ while($detection=$result1->fetchArray(SQLITE3_ASSOC))
 		if($i <= 10) {
 			$statement2 = $db->prepare('SELECT COUNT(*) FROM detections WHERE Com_Name == "'.$com_name.'" AND Date BETWEEN "'.date("Y-m-d",$startdate - (7*86400)).'" AND "'.date("Y-m-d",$enddate - (7*86400)).'"');
 			if($statement2 == False){
-			  echo "Database is busy";
+			  echo "Base de donnée occupée";
 			  header("refresh: 0;");
 			}
 			$result2 = $statement2->execute();
@@ -233,7 +233,7 @@ while($detection=$result1->fetchArray(SQLITE3_ASSOC))
 	<table >
 	<thead>
 		<tr>
-			<th><?php echo "Species Detected for the First Time: <br>"; ?></th>
+			<th><?php echo "Espèces détectées pour la première fois :<br>"; ?></th>
 		</tr>
 	</thead>
 	<tbody>
@@ -244,7 +244,7 @@ while($detection=$result1->fetchArray(SQLITE3_ASSOC))
 	{
 		$statement3 = $db->prepare('SELECT COUNT(*) FROM detections WHERE Com_Name == "'.$com_name.'" AND Date NOT BETWEEN "'.date("Y-m-d",$startdate).'" AND "'.date("Y-m-d",$enddate).'"');
 		if($statement3 == False){
-		  echo "Database is busy";
+		  echo "Base de donnée occupée";
 		  header("refresh: 0;");
 		}
 		$result3 = $statement3->execute();
@@ -257,7 +257,7 @@ while($detection=$result1->fetchArray(SQLITE3_ASSOC))
 		}
 	}
 	if($newspeciescount == 0) {
-		echo "<tr><td>No new species were seen this week.</td></tr>";
+		echo "<tr><td>Pas de nouvelles espèces cette semaine.</td></tr>";
 	}
 	?>
 	</tbody>
@@ -267,5 +267,5 @@ while($detection=$result1->fetchArray(SQLITE3_ASSOC))
 
 <br>
 <div style="text-align:center">
-	<hr><small style="font-size:small">* percentages are calculated relative to week <?php echo date('W', $enddate) - 1; ?></small>
+	<hr><small style="font-size:small">* les pourcentages sont calculés par rapport à la semaine <?php echo date('W', $enddate) - 1; ?></small>
 </div>
